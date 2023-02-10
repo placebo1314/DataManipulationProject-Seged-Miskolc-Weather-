@@ -53,8 +53,6 @@ def optimize_data(data):
     #reorder & delete unnecessary columns:
     data = data[['Date', 'Average_temperature_C', 'Max_temperature_C', 'Min_temperature_C', 'Sunny_hours', 'Rainy_days', 
     'Precipitation_mm', 'Windy_days_windspeed>=10m/s']]
-    #data.drop('Év', axis = 1, inplace = True)
-    #data.drop('Hónap', axis = 1, inplace = True)
 
     return data
 
