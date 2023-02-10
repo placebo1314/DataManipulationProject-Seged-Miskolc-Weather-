@@ -3,10 +3,19 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def analize_data(miskolc, szeged):
-    #print(miskolc.head(15))
-    #print(miskolc.tail(15))
 
-    
+    #compare Miskolc-Szeged avg temps
+    plt.figure(figsize=(20, 8))
+
+    plt.plot(miskolc.Date, miskolc.Average_temperature_C, label='Miskolc')
+
+    plt.plot(szeged.Date, szeged.Average_temperature_C, label='Szeged')
+
+    plt.legend(loc='best', framealpha=0.5)
+
+    plt.ylabel('Avg. Temperature')
+
+    plt.show()
     
 
 def optimize_data(data):
