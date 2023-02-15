@@ -16,18 +16,28 @@ def save_message(city_names, plot_type):
         root.withdraw()
         messagebox.showinfo("File saved", f"Saved file: \nResults/{city_names}{plot_type}_(2017-2021)plot.png")
 
-def avg_temps(city_names, is_save, *cities):
+def avg_temps(city_names, selected_option, is_save, *cities):
     set_dark_bg()
     colors = ['red', 'blue', 'purple', 'green']
     for c in range(len(cities)):
         color = colors[c]
         marker = 'o' if (c % 2 == 0) else 's'
-        # city_dates = cities[c].Date[cities[c].Date.dt.month % 2 == 0]
-        # city_temps = cities[c].Average_temperature_C[cities[c].Date.dt.month % 2 == 0]
-        city_dates = cities[c].Date[cities[c].Date.dt.month]
-        city_temps = cities[c].groupby(cities[c].Date.dt.month)['Average_temperature_C'].mean()
+        if selected_option == "All years and months":
+            # city_dates = cities[c].Date[cities[c].Date.dt.month % 2 == 0]
+            # city_temps = cities[c].Average_temperature_C[cities[c].Date.dt.month % 2 == 0]
+            city_dates = cities[c].Date
+            city_temps = cities[c].Average_temperature_C
+        elif selected_option == "All quarter year":
+            city_quarterly = cities[c].resample('Q', on='Date').mean()
+            city_dates = city_quarterly.index
+            city_temps =city_quarterly.Average_temperature_C
+        else:
+            #city_dates = calendar.month_name[1:]
+            city_dates = [calendar.month_name[i][:3] for i in range(1, 13)]
+            city_temps = cities[c].groupby(cities[c].Date.dt.month)['Average_temperature_C'].mean()
 
         plt.plot(city_dates, city_temps, label = city_names[c], linewidth = 2, marker = marker, color = color, markersize = 6, markeredgecolor = 'black')
+    
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), framealpha=0.5, fontsize=12)
     plt.legend(loc='upper right', bbox_to_anchor=(1.06, 1.05), framealpha=0.5, fontsize=10)
     plt.ylabel('Avg. Temperature')
@@ -39,17 +49,8 @@ def avg_temps(city_names, is_save, *cities):
         #print("Saved file: \nResults/" + name + "Avg_temp_(2017-2021)plot.png")
     plt.show()
     clearPlts()
-    # # Resample the data to calculate average temperature per quarter year
-    # miskolc_quarterly = miskolc.resample('Q', on='Date').mean()
-    # szeged_quarterly = szeged.resample('Q', on='Date').mean()
-    #mpl.style.use('dark_background')
-    #sns.set_style("darkgrid")
-    # plt.plot(miskolc_quarterly.index, miskolc_quarterly.Average_temperature_C, label = 'Miskolc', color = 'red', 
-    # linewidth = 2, marker = 'o', markersize = 6, markeredgecolor = 'black')
-    # plt.plot(szeged_quarterly.index, szeged_quarterly.Average_temperature_C, label = 'Szeged', 
-    # color = 'blue', linewidth = 2, marker = 's', markersize = 6, markeredgecolor = 'black')
 
-def avg_sunny_hours(city_names, is_save, *cities):
+def avg_sunny_hours(city_names, selected_option, is_save, *cities):
     set_dark_bg()
     lack_of_data = False
     lack_in_city = ""
@@ -59,7 +60,19 @@ def avg_sunny_hours(city_names, is_save, *cities):
             lack_of_data = True
             lack_in_city += city_names[c]
         color = colors[c]
-        plt.plot(cities[c].Date, cities[c].Sunny_hours, label = city_names[c], color = color)
+        if selected_option == "All years and months":
+            city_dates = cities[c].Date
+            city_temps = cities[c].Sunny_hours
+        elif selected_option == "All quarter year":
+            city_quarterly = cities[c].resample('Q', on='Date').mean()
+            city_dates = city_quarterly.index
+            city_temps =city_quarterly.Sunny_hours
+        else:
+            #city_dates = calendar.month_name[1:]
+            city_dates = [calendar.month_name[i][:3] for i in range(1, 13)]
+            city_temps = cities[c].groupby(cities[c].Date.dt.month)['Sunny_hours'].mean()
+
+        plt.plot(city_dates, city_temps, label = city_names[c], color = color)
     plt.ylabel('Sunny Hours')
     plt.suptitle('Avg. Sunny Hours (2017-2021)')
     plt.legend(loc='center left', bbox_to_anchor = (0.93, 0.97), framealpha = 0.5, fontsize = 10)
@@ -76,7 +89,7 @@ def avg_sunny_hours(city_names, is_save, *cities):
         #print("Saved file: \nResults/" + name + "avg_sunny_hours(2017-2021)plot.png")
     clearPlts()
 
-def avg_rainy_days(city_names, is_save, *cities):
+def avg_rainy_days(city_names, selected_option, is_save, *cities):
     #sns.set_style("ticks")
     set_dark_bg()
     colors = ['red', 'blue', 'purple', 'green']
@@ -84,7 +97,18 @@ def avg_rainy_days(city_names, is_save, *cities):
     for c in range(len(cities)):
         color = colors[c]
         marker = 'o' if (c+1 % 2 == 0) else 's'
-        plt.plot(cities[c].groupby(cities[c].Date.dt.strftime('%b'))['Rainy_days'].mean(), label=city_names[c], linewidth=2, marker=marker, markersize=8, markeredgecolor='black', color = color)
+        if selected_option == "All years and months":
+            city_dates = cities[c].Date
+            city_temps = cities[c].Rainy_days
+        elif selected_option == "All quarter year":
+            city_quarterly = cities[c].resample('Q', on='Date').mean()
+            city_dates = city_quarterly.index
+            city_temps =city_quarterly.Rainy_days
+        else:
+            city_dates = [calendar.month_name[i][:3] for i in range(1, 13)]
+            city_temps = cities[c].groupby(cities[c].Date.dt.month)['Rainy_days'].mean()
+        #plt.plot(cities[c].groupby(cities[c].Date.dt.strftime('%b'))['Rainy_days'].mean(), label=city_names[c], linewidth=2, marker=marker, markersize=8, markeredgecolor='black', color = color)
+        plt.plot(city_dates, city_temps, label=city_names[c], linewidth=2, marker=marker, markersize=8, markeredgecolor='black', color = color)
 
     plt.ylabel('Rainy days', fontsize=14)
     plt.xlabel('Month', fontsize=13)
@@ -163,20 +187,20 @@ def compare_sunny_hours(city_names, is_save, *dataframes):
                 bar_colors.append('black')
 
         # Plotting the difference in sunny hours as a bar plot
-    
         plot_grid.bar(city1_data['Date'], city1_data['Sunny_hours_diff'], label = city1_name, color = bar_colors, edgecolor = bar_colors, width = 5.8)
         plot_grid.set_xlabel('Date')
-        #plot_grid.set_ylabel(city1_name)
+        plot_grid.set_ylabel(city1_name)
         plot_grid.grid(color='lightgray')
         plot_grid.set_facecolor('darkgray')
-        plot_grid.spines['bottom'].set_color('white')
-        plot_grid.spines['left'].set_color('white')
-        plot_grid.spines['top'].set_color('white')
-        plot_grid.spines['right'].set_color('white')
-        plot_grid.yaxis.label.set_color('white')
-        plot_grid.xaxis.label.set_color('white')
-        plot_grid.tick_params(axis='both', colors='white')
-        plt.suptitle("How much sunnier is {city1_name} than {city2_name} ?", fontsize=16)
+        smokewhite = (245/255, 245/255, 245/255)
+        plot_grid.spines['bottom'].set_color(smokewhite)
+        plot_grid.spines['left'].set_color(smokewhite)
+        plot_grid.spines['top'].set_color(smokewhite)
+        plot_grid.spines['right'].set_color(smokewhite)
+        plot_grid.yaxis.label.set_color(smokewhite)
+        plot_grid.xaxis.label.set_color(smokewhite)
+        plot_grid.tick_params(axis='both', colors=smokewhite)
+        plt.suptitle(f"How much sunnier is {city1_name} than {city2_name} ?", fontsize = 16, color = smokewhite)
 
         formatter = ticker.FuncFormatter(format_yaxis)
         plot_grid.yaxis.set_major_formatter(formatter)
@@ -222,14 +246,22 @@ def compare_sunny_hours(city_names, is_save, *dataframes):
             #print("Saved file: \nResults/" + name + "_compare_sunny_hours(2017-2021)BarPlot.png")
         plt.show()
 
-def avg_windy_days(city_names, is_save, *cities):
+def avg_windy_days(city_names, selected_option, is_save, *cities):
     set_dark_bg()
     colors = ['red', 'blue', 'purple', 'green']
     for c in range(len(cities)):
         color = colors[c]
         marker = 'o' if (c+1 % 2 == 0) else 's'
-        city_dates = cities[c].Date[cities[c].Date.dt.month % 2 == 0]
-        city_temps = cities[c]['Windy_days_windspeed>=10m/s'][cities[c].Date.dt.month % 2 == 0]
+        if selected_option == "All years and months":
+            city_dates = cities[c].Date
+            city_temps = cities[c]['Windy_days_windspeed>=10m/s']
+        elif selected_option == "All quarter year":
+            city_quarterly = cities[c].resample('Q', on='Date').mean()
+            city_dates = city_quarterly.index
+            city_temps =city_quarterly['Windy_days_windspeed>=10m/s']
+        else:
+            city_dates = [calendar.month_name[i][:3] for i in range(1, 13)]
+            city_temps = cities[c].groupby(cities[c].Date.dt.month)['Windy_days_windspeed>=10m/s'].mean()
         plt.plot(city_dates, city_temps, label = city_names[c], linewidth = 2, marker = marker, markersize = 6, markeredgecolor = 'black', color = color)
     plt.legend(loc = 'upper right', bbox_to_anchor = (0.93, 0.97), framealpha = 0.5, fontsize = 10)
     plt.ylabel('Avg. Windy days')
