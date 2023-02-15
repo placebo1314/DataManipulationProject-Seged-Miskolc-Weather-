@@ -46,7 +46,6 @@ def avg_temps(city_names, selected_option, is_save, *cities):
         name = '-'.join(city_names)
         save_message(name, "_Avg_temp")
         plt.savefig("Results/" + name + "_Avg_temp_(2017-2021)plot.png")
-        #print("Saved file: \nResults/" + name + "Avg_temp_(2017-2021)plot.png")
     plt.show()
     clearPlts()
 
@@ -68,7 +67,6 @@ def avg_sunny_hours(city_names, selected_option, is_save, *cities):
             city_dates = city_quarterly.index
             city_temps =city_quarterly.Sunny_hours
         else:
-            #city_dates = calendar.month_name[1:]
             city_dates = [calendar.month_name[i][:3] for i in range(1, 13)]
             city_temps = cities[c].groupby(cities[c].Date.dt.month)['Sunny_hours'].mean()
 
@@ -86,7 +84,6 @@ def avg_sunny_hours(city_names, selected_option, is_save, *cities):
         name = '-'.join(city_names)
         save_message(name, "avg_sunny_hours")
         plt.savefig("Results/" + name + "avg_sunny_hours_(2017-2021)plot.png")
-        #print("Saved file: \nResults/" + name + "avg_sunny_hours(2017-2021)plot.png")
     clearPlts()
 
 def avg_rainy_days(city_names, selected_option, is_save, *cities):
@@ -122,7 +119,6 @@ def avg_rainy_days(city_names, selected_option, is_save, *cities):
         name = '-'.join(city_names)
         save_message(name, "_Avg_rainy_days")
         plt.savefig("Results/" + name + "_Avg_rainy_days_(2017-2021)plot.png")
-        #print("Saved file: \nResults/" + name + "Avg_rainy_days_(2017-2021)plot.png")
     plt.show()
     clearPlts()
 
@@ -145,7 +141,7 @@ def compare_precipitation(city_names, is_save, *dataframes):
         centre_circle = plt.Circle((0, 0), 0.7, fc='white')
         ax.add_artist(centre_circle)
         rain_sum = city_data.groupby(city_data.Date.dt.month)['Precipitation_mm'].mean().sum()
-        ax.text(0, -1.22, f"Avg. rain per year: {rain_sum:.1f} mm", ha="center", va="center", fontweight='bold')
+        ax.text(0, -1.25, f"Avg. rain per year: {rain_sum:.1f} mm", ha="center", va="center", fontweight='bold')
         ax.set_aspect(0.85)
 
     for i in range(num_cities, num_rows * 2):
@@ -155,7 +151,6 @@ def compare_precipitation(city_names, is_save, *dataframes):
         name = '-'.join(city_names)
         save_message(name, "Precipitation")
         plt.savefig("Results/" + name + "_Precipitation(2017-2021)CirclePlots.png")
-        #print("Saved file: \nResults/" + name + "_Precipitation(2017-2021)CirclePlots.png")
     plt.show()
     clearPlts()
 
@@ -243,8 +238,42 @@ def compare_sunny_hours(city_names, is_save, *dataframes):
             name = '-'.join(city_names)
             save_message(name, "_compare_sunny_hours")
             plt.savefig("Results/" + name + "_compare_sunny_hours_(2017-2021)plot.png")
-            #print("Saved file: \nResults/" + name + "_compare_sunny_hours(2017-2021)BarPlot.png")
         plt.show()
+
+def avg_precipitation(city_names, selected_option, is_save, *cities):
+    #sns.set_style("ticks")
+    set_dark_bg()
+    colors = ['red', 'blue', 'purple', 'green']
+    month_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    for c in range(len(cities)):
+        color = colors[c]
+        marker = 'o' if (c+1 % 2 == 0) else 's'
+        if selected_option == "All years and months":
+            city_dates = cities[c].Date
+            city_temps = cities[c].Precipitation_mm
+        elif selected_option == "All quarter year":
+            city_quarterly = cities[c].resample('Q', on='Date').mean()
+            city_dates = city_quarterly.index
+            city_temps =city_quarterly.Precipitation_mm
+        else:
+            city_dates = [calendar.month_name[i][:3] for i in range(1, 13)]
+            city_temps = cities[c].groupby(cities[c].Date.dt.month)['Precipitation_mm'].mean()
+        plt.plot(city_dates, city_temps, label=city_names[c], linewidth=2, marker=marker, markersize=8, markeredgecolor='black', color = color)
+
+    plt.ylabel('Precipitation (mm)', fontsize=14)
+    #plt.xlabel('Month', fontsize=13)
+
+    plt.xticks(range(12), month_names, fontsize=12, rotation=45)
+    plt.yticks(fontsize=12)
+
+    plt.legend(loc = 'center left', bbox_to_anchor = (0.93, 0.97), framealpha = 0.5, fontsize = 10)
+    plt.suptitle('Avg. Precipitation (mm) (2017-2021)', fontsize=16)
+    if is_save:
+        name = '-'.join(city_names)
+        save_message(name, "_Avg_Precipitation_mm")
+        plt.savefig("Results/" + name + "_Avg_Precipitation_mm_(2017-2021)plot.png")
+    plt.show()
+    clearPlts()
 
 def avg_windy_days(city_names, selected_option, is_save, *cities):
     set_dark_bg()
@@ -270,7 +299,6 @@ def avg_windy_days(city_names, selected_option, is_save, *cities):
         name = '-'.join(city_names)
         save_message(name, "_Avg_Windy_days")
         plt.savefig("Results/" + name + "_Avg_Windy_days_(2017-2021)plot.png")
-        #print("Saved file: \nResults/" + name + "_Avg_Windy_days_(2017-2021)plot.png")
     plt.show()
     clearPlts()
 

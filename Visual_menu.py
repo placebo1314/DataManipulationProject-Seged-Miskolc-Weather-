@@ -5,7 +5,7 @@ from tkinter import messagebox
 from ttkthemes import ThemedStyle
 
 from Work_with_dataframes import get_path, get_name, get_dataframe
-from Plotting import avg_sunny_hours, avg_temps, avg_rainy_days, avg_windy_days, compare_precipitation, compare_sunny_hours
+from Plotting import avg_sunny_hours, avg_temps, avg_rainy_days, avg_windy_days, compare_precipitation, compare_sunny_hours, avg_precipitation
 
 def visual_main_menu():
     def single_menu_action():
@@ -44,8 +44,8 @@ def visual_single_menu():
     '8': 'Siófok (Balaton)', '9': 'Szeged', '10': 'Szombathely'}
 
     def city_action(city):
-        plot_types= {'1': 'Avg. sunny hours', '2': 'Avg. Temperatures', '3': 'Avg. rainy days', '4': 'Avg. windy days'}
-        selected_city = city
+        plot_types= {'1': 'Avg. sunny hours', '2': 'Avg. Temperatures', '3': 'Avg. rainy days', '4': 'Avg. windy days', '5': 'Avg. precipitations'}
+        selected_city = [city]
         root.destroy()
         visual_plot_menu(plot_types, selected_city)
 
@@ -105,8 +105,8 @@ def visual_compare_menu():
     # Create button to generate visualizations
     def generate_visualizations():
         # Call visual_plot_menu with selected cities and plot types
-        plot_types= {'1': 'Avg. sunny hours', '2': 'Avg. Temperatures', '3': 'Avg. rainy days', '4': 'Compare precipitations (Pie)', 
-        '5': "Compare two city's sunny hours (Bar)", '6': 'Avg. windy days'}
+        plot_types= {'1': 'Avg. sunny hours', '2': 'Avg. Temperatures', '3': 'Avg. rainy days', '4': 'Avg. precipitations', '5': 'Compare precipitations (Pie)', 
+        '6': "Compare two city's sunny hours (Bar)", '7': 'Avg. windy days'}
         root.destroy()
         selected_cities = []
         for index in selected_cities_indexes:
@@ -161,8 +161,8 @@ def visual_plot_menu(plot_types, city_name):
     root.mainloop()
 
 def show_plot_action(city_names, plot_type, selected_option, save, root):
-    if type(city_names) == str:
-        city_names = [city_names]
+    # if type(city_names) == str:
+    #     city_names = [city_names]
     question = "You want to save the " + plot_type + " of " + ", ".join(city_names) + "?"
     paths = [get_path(city_name) for city_name in city_names]
     dataframes = [get_dataframe(path) for path in paths]
@@ -192,4 +192,6 @@ def show_plot_action(city_names, plot_type, selected_option, save, root):
         compare_precipitation(city_names, save, *dataframes)
     elif plot_type == 'Compare precipitations (Pie)':
         compare_precipitation(city_names, save, *dataframes)
+    elif plot_type == 'Avg. precipitations':
+        avg_precipitation(city_names, save, *dataframes)
     visual_main_menu()

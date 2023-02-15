@@ -1,10 +1,6 @@
 from Console_menu import console_main_menu
 from Visual_menu import visual_main_menu
 
-# city_listbox = {}
-# selected_cities_indexes = []
-# selected_city = ""
-
 def main():
     #console_main_menu()
     visual_main_menu()
