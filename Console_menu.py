@@ -80,25 +80,23 @@ def console_compare_menu(list_of_cities):
     print("You want to save the ", plot, "(", city1, city2, ") ?")
     print("'1': Yes, I want. '2': No, thx. Just show it. (Push Enter after choose!)")
     save = True if input() == '1' else False
-    path1 = get_path(city1)
-    path2 = get_path(city2)
-    dataframe1 = get_dataframe(path1)
-    city_name1 = get_name(path1)
-    dataframe2 = get_dataframe(path2)
-    city_name2 = get_name(path2)
+    city_names = [city1, city2]
+    paths = [get_path(city_name) for city_name in city_names]
+    dataframes = [get_dataframe(path) for path in paths]
+    city_names = [get_name(path) for path in paths]
     match plot:
         case 'Avg. sunny hours':
-            avg_sunny_hours((city_name1, city_name2),  save, dataframe1, dataframe2)
+            avg_sunny_hours(city_names,  "All years and months", save, *dataframes)
         case 'Avg. Temperatures':
-            avg_temps((city_name1, city_name2),  save, dataframe1, dataframe2)
+            avg_temps(city_names, "All years and months", save, *dataframes)
         case 'Avg. rainy days':
-            avg_rainy_days((city_name1, city_name2),  save, dataframe1, dataframe2)
+            avg_rainy_days(city_names, "All years and months", save, *dataframes)
         case 'Compare precipitations (Pie)':
-            compare_precipitation(city_name1, city_name2, save, dataframe1, dataframe2)
+            compare_precipitation(city_names, "All years and months", save, *dataframes)
         case 'Compare sunny hours (Bar)':
-            compare_sunny_hours(city_name1, city_name2, save, dataframe1, dataframe2)
+            compare_sunny_hours(city_names, "All years and months", save, *dataframes)
         case 'Avg. windy days':
-            avg_windy_days((city_name1, city_name2),  save, dataframe1, dataframe2)
+            avg_windy_days(city_names, "All years and months", save, *dataframes)
 
 def console_single_menu(list_of_cities):
     plot_types= {'1': 'Avg. sunny hours', '2': 'Avg. Temperatures', '3': 'Avg. rainy days', '4': 'Avg. windy days'}
@@ -163,8 +161,8 @@ def print_table(inventory, order = None):
         sorted_items = sorted(inventory.items(), key=lambda x: x[1], reverse=True)
     else:
         sorted_items = list(inventory.items())
-    list1.append("-----------------------------------\n          City name:   |   Option:\n-----------------------------------\n")
+    list1.append("------------------------------------------\n          City name:   |   Option:\n------------------------------------------\n")
     for c in range(0, len(sorted_items)):
-        list1.append("{0:>22} |{1:>6}\n".format(sorted_items[c][1], sorted_items[c][0]))
-    list1.append("-----------------------------------")
+        list1.append("{0:>29} |{1:>6}\n".format(sorted_items[c][1], sorted_items[c][0]))
+    list1.append("------------------------------------------")
     print(''.join(list1))

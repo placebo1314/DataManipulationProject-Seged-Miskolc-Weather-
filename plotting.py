@@ -123,13 +123,15 @@ def avg_rainy_days(city_names, selected_option, is_save, *cities):
     clearPlts()
 
 def compare_precipitation(city_names, is_save, *dataframes):
+    set_dark_bg()
     num_cities = len(city_names)
     num_rows = (num_cities - 1) // 2 + 1
     fig, axs = plt.subplots(num_rows, 2, figsize=(15, 10*num_rows))
     axs = axs.flatten()
 
-    colors = ['blue', 'green', 'red', 'cyan', 'magenta', 'yellow', 'gray', 'pink', 'silver', 'gold', 'brown', 'purple']
-    labels = calendar.month_name[1:]
+    colors = ['blue', 'green', 'red', 'cyan', 'magenta', 'darkgray', 'gray', 'orange', 'silver', '#2BC20E', 'brown', 'purple']
+    month_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    labels = month_names
     autopct = '%1.1f%%'
 
     for i, (city_name, city_data) in enumerate(zip(city_names, dataframes)):
@@ -138,7 +140,7 @@ def compare_precipitation(city_names, is_save, *dataframes):
         ax.pie(values, labels=labels, autopct=autopct, explode=[0.05]*12,
                shadow=True, startangle=90, counterclock=False, colors=colors, pctdistance=0.85)
         ax.set_title('Monthly Average Precipitation in ' + city_name, fontsize=14, fontweight='bold')
-        centre_circle = plt.Circle((0, 0), 0.7, fc='white')
+        centre_circle = plt.Circle((0, 0), 0.7, fc='black')
         ax.add_artist(centre_circle)
         rain_sum = city_data.groupby(city_data.Date.dt.month)['Precipitation_mm'].mean().sum()
         ax.text(0, -1.25, f"Avg. rain per year: {rain_sum:.1f} mm", ha="center", va="center", fontweight='bold')
@@ -155,6 +157,7 @@ def compare_precipitation(city_names, is_save, *dataframes):
     clearPlts()
 
 def compare_sunny_hours(city_names, is_save, *dataframes):
+        set_dark_bg()
         # Adding a column for the difference in sunny hours
         lack_of_data = False
         lack_in_city = ""
@@ -208,7 +211,7 @@ def compare_sunny_hours(city_names, is_save, *dataframes):
             table_data.append(row)
 
         table_data_rows = len(table_data)
-        cell_colors = [['lightgray', 'lightgray'] for i in range(table_data_rows)]
+        cell_colors = [['darkgray', 'darkgray'] for i in range(table_data_rows)]
 
         table = table_grid.table(cellText=table_data, colLabels=["Month", "Avg. Difference"], cellLoc='center', colLoc='center', cellColours=cell_colors)
         table.auto_set_font_size(False)

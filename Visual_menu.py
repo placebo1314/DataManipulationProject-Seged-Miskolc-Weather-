@@ -80,7 +80,7 @@ def visual_compare_menu():
     # Create new Toplevel window for compare menu
     root = tk.Tk()
     root.title("City Menu")
-    root.geometry("300x500")
+    root.geometry("300x550")
 
     # Create city selection listbox
     global city_listbox
@@ -132,7 +132,7 @@ def visual_compare_menu():
 def visual_plot_menu(plot_types, city_name):
     root = tk.Tk()
     root.title("Plot Menu")
-    root.geometry("300x400")
+    root.geometry("350x500")
 
     def back_action():
         root.destroy()
