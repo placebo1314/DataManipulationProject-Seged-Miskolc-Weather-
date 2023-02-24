@@ -30,12 +30,12 @@ Havonta;;;;;;;;
 
 Few examples, what can we create:
 
-![Screenshot](ExampleResults\Newplot.png)
+![Screenshot](\ExampleResults\Newplot.png)
 
-![Screenshot](ExampleResults\Miskolc_Szeged_Precipitation(2017-2021)plot.png)
+![Screenshot](\ExampleResults\Miskolc_Szeged_Precipitation(2017-2021)plot.png)
 
-![Screenshot](Results\Miskolc-Kékestetõ_Avg_temp_(2017-2021)plot.png)
+![Screenshot](\Results\Miskolc-Kékestetõ_Avg_temp_(2017-2021)plot.png)
 
-![Screenshot](ExampleResults\Miskolc_Szeged_Avg_rainy_days_(2017-2021)plot.png)
+![Screenshot](\ExampleResults\Miskolc_Szeged_Avg_rainy_days_(2017-2021)plot.png)
 
-![Screenshot](Results\Budapest_Precipitation(2017-2021)CirclePlots.png)
+![Screenshot](\Results\Budapest_Precipitation(2017-2021)CirclePlots.png)
