@@ -3,6 +3,7 @@
 
 **The Hungarian Weather (THW)**
 In this project I made a program with which we can easily create images in the required plot format.
+Made 2 different UI (Console, and GUI).
 
 The data comes from ksh.hu and we do not store anything locally. For each query, we combine the url for loading from the website.
 
@@ -37,3 +38,4 @@ Few examples, what can we create:
 
 ![Screenshot](ExampleResults\Miskolc_Szeged_Avg_rainy_days_(2017-2021)plot.png)
 
+![Screenshot](Results\Budapest_Precipitation(2017-2021)CirclePlots.png)
