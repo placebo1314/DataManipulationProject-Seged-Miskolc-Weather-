@@ -4,7 +4,5 @@ from Visual_menu import visual_main_menu
 def main():
     #console_main_menu()
     visual_main_menu()
-    #data = optimize_data(pd.read_csv("stadat-kor0072-15.9.2.3-hu.csv", encoding = 'unicode_escape', header = 1 ,sep=";"))
-    #avg_sunny_hours(("proba",), False, data)
 
 main()

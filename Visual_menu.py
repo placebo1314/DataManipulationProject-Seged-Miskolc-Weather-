@@ -104,7 +104,7 @@ def visual_compare_menu():
 
     # Create button to generate visualizations
     def generate_visualizations():
-        # Call visual_plot_menu with selected cities and plot types
+    # Call visual_plot_menu with selected cities and plot types
         plot_types= {'1': 'Avg. sunny hours', '2': 'Avg. Temperatures', '3': 'Avg. rainy days', '4': 'Avg. precipitations', '5': 'Compare precipitations (Pie)', 
         '6': "Compare two city's sunny hours (Bar)", '7': 'Avg. windy days'}
         root.destroy()

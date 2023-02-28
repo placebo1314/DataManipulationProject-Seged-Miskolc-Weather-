@@ -1,4 +1,4 @@
-# DataManipulationProject
+# DataVisualization-Project-Hungarian-Weather
 
 
 **The Hungarian Weather (THW)**
@@ -28,14 +28,15 @@ Havonta;;;;;;;;
 ;febru�r;-0,3;13,5;-11,6;14;48;..;3
 ;m�rcius;4,0;18,7;-15,2;13;61;..;8
 
-Few examples, what can we create:
+- Few examples, what can we create:
 
-![Screenshot](\ExampleResults\Newplot.png)
+    ![Screenshot](ExampleResults/Newplot.png)
 
-![Screenshot](\ExampleResults\Miskolc_Szeged_Precipitation(2017-2021)plot.png)
+    ![Screenshot](ExampleResults/Miskolc_Szeged_Precipitation(2017-2021)plot.png)
 
-![Screenshot](\Results\Miskolc-Kékestetõ_Avg_temp_(2017-2021)plot.png)
+    ![Screenshot](ExampleResults/Miskolc-Kékestetõ_Avg_temp_(2017-2021)plot.png)
 
-![Screenshot](\ExampleResults\Miskolc_Szeged_Avg_rainy_days_(2017-2021)plot.png)
+    ![Screenshot](ExampleResults/Miskolc_Szeged_Avg_rainy_days_(2017-2021)plot.png)
 
-![Screenshot](\Results\Budapest_Precipitation(2017-2021)CirclePlots.png)
+    ![Screenshot](ExampleResults/Budapest_Precipitation(2017-2021)CirclePlots.png)
+ 
