@@ -23,8 +23,6 @@ def avg_temps(city_names, selected_option, is_save, *cities):
         color = colors[c]
         marker = 'o' if (c % 2 == 0) else 's'
         if selected_option == "All years and months":
-            # city_dates = cities[c].Date[cities[c].Date.dt.month % 2 == 0]
-            # city_temps = cities[c].Average_temperature_C[cities[c].Date.dt.month % 2 == 0]
             city_dates = cities[c].Date
             city_temps = cities[c].Average_temperature_C
         elif selected_option == "All quarter year":
@@ -32,7 +30,6 @@ def avg_temps(city_names, selected_option, is_save, *cities):
             city_dates = city_quarterly.index
             city_temps =city_quarterly.Average_temperature_C
         else:
-            #city_dates = calendar.month_name[1:]
             city_dates = [calendar.month_name[i][:3] for i in range(1, 13)]
             city_temps = cities[c].groupby(cities[c].Date.dt.month)['Average_temperature_C'].mean()
 
@@ -76,7 +73,6 @@ def avg_sunny_hours(city_names, selected_option, is_save, *cities):
     plt.legend(loc='center left', bbox_to_anchor = (0.93, 0.97), framealpha = 0.5, fontsize = 10)
     
     if lack_of_data:
-        #print(f"\n {Fore.RED}Not enough data in", lack_in_city + ". (Where lack of data display -1 on the diagram !)" + "\033[0m")
         messagebox.showwarning("Warning", f"Not enough data in {lack_in_city}. ( Sorry, but on the ksh.hu not enogh 'Sunny_hours' data! :( )")
     plt.show()
 
@@ -234,7 +230,6 @@ def compare_sunny_hours(city_names, is_save, *dataframes):
         plot_grid.yaxis.set_major_locator(ticker.MultipleLocator(10))
     
         if lack_of_data:
-            #print(f"\n {Fore.RED}Not enough data in", lack_in_city + ". (Where lack of data display -1 on the diagram !)" + "\033[0m")
             messagebox.showwarning("Warning", f"Not enough data in {lack_in_city}. ( Sorry, but on the ksh.hu not enogh 'Sunny_hours' data! :( )")
     
         if is_save:
@@ -244,7 +239,6 @@ def compare_sunny_hours(city_names, is_save, *dataframes):
         plt.show()
 
 def avg_precipitation(city_names, selected_option, is_save, *cities):
-    #sns.set_style("ticks")
     set_dark_bg()
     colors = ['red', 'blue', 'purple', 'green']
     month_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -264,7 +258,6 @@ def avg_precipitation(city_names, selected_option, is_save, *cities):
         plt.plot(city_dates, city_temps, label=city_names[c], linewidth=2, marker=marker, markersize=8, markeredgecolor='black', color = color)
 
     plt.ylabel('Precipitation (mm)', fontsize=14)
-    #plt.xlabel('Month', fontsize=13)
 
     plt.xticks(range(12), month_names, fontsize=12, rotation=45)
     plt.yticks(fontsize=12)
