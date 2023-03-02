@@ -1,4 +1,7 @@
 import calendar
+from matplotlib import cm
+from matplotlib.colors import LinearSegmentedColormap
+import numpy as np
 import seaborn as sns
 import matplotlib.ticker as ticker
 from colorama import Fore
@@ -172,19 +175,63 @@ def compare_sunny_hours(city_names, is_save, *dataframes):
         city1_data['Sunny_hours_diff'] = city1_data['Sunny_hours'] - city2_data['Sunny_hours']
         city1_data['Sunny_hours_diff_pct'] = city1_data['Sunny_hours_diff'] / city2_data['Sunny_hours'] * 100
 
-        # Plotting the difference in sunny hours as a bar plot
-        bar_colors = []
-        for diff in city1_data['Sunny_hours_diff']:
-            if diff > 0:
-                bar_colors.append('yellow')
-            else:
-                bar_colors.append('black')
+        #plot_grid.bar(city1_data['Date'], city1_data['Sunny_hours_diff'], label = city1_name, color = bar_colors, edgecolor = bar_colors, width = 5.8)
 
-        # Plotting the difference in sunny hours as a bar plot
-        plot_grid.bar(city1_data['Date'], city1_data['Sunny_hours_diff'], label = city1_name, color = bar_colors, edgecolor = bar_colors, width = 5.8)
+        # def gradientbars(bars,ydata,cmap):
+        #     ax = bars[0].axes
+        #     lim = ax.get_xlim()+ax.get_ylim()
+        #     ax.axis(lim)
+        #     for bar in bars:
+        #         bar.set_facecolor("none")
+        #         x,y = bar.get_xy()
+        #         w, h = bar.get_width(), bar.get_height()
+        #         grad = np.atleast_2d(np.linspace(0,1*h/max(ydata),256)).T
+        #         #zorder of 2 to get gradients above the facecolor, but below the bar outlines
+        #         ax.imshow(grad, extent = [x,x+w,y,y+h], origin = 'lower',aspect = "auto",zorder = 2, norm = cm.colors.NoNorm(vmin = 0,vmax = 1),cmap = plt.get_cmap(cmap))
+
+        # def three_color_cmap(color1, color2, color3, transition_value1, transition_width1, transition_value2, transition_width2, plot_min, plot_max):
+        #     colors=[color1, color1, color2, color2, color3, color3]
+        #     transition1 = (transition_value1 - plot_min)/(plot_max - plot_min)
+        #     transition2 = (transition_value2 - plot_min)/(plot_max - plot_min)
+        #     trans_width_scaled1 = transition_width1 / (plot_max - plot_min)
+        #     trans_width_scaled2 = transition_width2 / (plot_max - plot_min)
+        #     nodes=[0.0, transition1 - (trans_width_scaled1/2), transition1 + (trans_width_scaled1/2), transition2 - (trans_width_scaled2/2), 
+        #         transition2 + (trans_width_scaled2/2), 1.0]
+        #     new_cmap = LinearSegmentedColormap.from_list("mycmap", list(zip(nodes, colors)))
+        #     return(new_cmap)
+        
+        # my_cmap = three_color_cmap(color1='#3c7780', color2='#fcba05',color3='#d93102',
+        #                     transition_value1=3.5, transition_width1=1, 
+        #                     transition_value2=5.5, transition_width2=1,
+        #                     plot_min=0,plot_max=city1_data['Sunny_hours_diff'].max())
+
+        # # zorder=0 sends gridlines to the back
+        # plot_grid.grid(which='major', axis='y', linestyle='--', color='lightgray', zorder=0)
+        # # zorder=3 makes our edges show
+        # my_bar = plot_grid.bar(city1_data['Date'], city1_data['Sunny_hours_diff'], edgecolor='gray', zorder=3, label = city1_name)
+        # gradientbars(my_bar, city1_data['Sunny_hours_diff'], my_cmap)
+
+        def gradientbars(bars,ydata,cmap):
+            ax = bars[0].axes
+            lim = ax.get_xlim()+ax.get_ylim()
+            ax.axis(lim)
+            w = 10.8
+                
+            for i, bar in enumerate(bars):
+                #bar.set_facecolor("none")
+                x,y = bar.get_xy()
+                h = bar.get_height()
+                grad = np.atleast_2d(np.linspace(0,1*h/max(ydata),256)).T
+
+                #zorder of 2 to get gradients above the facecolor, but below the bar outlines
+                ax.imshow(grad, extent=[x,x+w,y,y+h], origin='lower',aspect="auto",zorder=2, norm=cm.colors.NoNorm(vmin=0,vmax=1),cmap=cmap)
+    
+        my_bar = plot_grid.bar(city1_data['Date'], city1_data['Sunny_hours_diff'])
+        cmap = plt.get_cmap('plasma')
+        gradientbars(my_bar, city1_data['Sunny_hours_diff'], cmap)
+        
         plot_grid.set_xlabel('Date')
         plot_grid.set_ylabel(city1_name)
-        plot_grid.grid(color='lightgray')
         plot_grid.set_facecolor('darkgray')
         smokewhite = (245/255, 245/255, 245/255)
         plot_grid.spines['bottom'].set_color(smokewhite)
@@ -193,7 +240,6 @@ def compare_sunny_hours(city_names, is_save, *dataframes):
         plot_grid.spines['right'].set_color(smokewhite)
         plot_grid.yaxis.label.set_color(smokewhite)
         plot_grid.xaxis.label.set_color(smokewhite)
-        plot_grid.tick_params(axis='both', colors=smokewhite)
         plt.suptitle(f"How much sunnier is {city1_name} than {city2_name} ?", fontsize = 16, color = smokewhite)
 
         formatter = ticker.FuncFormatter(format_yaxis)
@@ -210,6 +256,9 @@ def compare_sunny_hours(city_names, is_save, *dataframes):
         cell_colors = [['darkgray', 'darkgray'] for i in range(table_data_rows)]
 
         table = table_grid.table(cellText=table_data, colLabels=["Month", "Avg. Difference"], cellLoc='center', colLoc='center', cellColours=cell_colors)
+        for j in range(len(table_data[0])):
+            cell = table.get_celld()[(0,j)]
+            cell.set_text_props(weight='bold', color='black')
         table.auto_set_font_size(False)
         table.set_fontsize(10)
         text = table[0, 1].get_text()
@@ -223,7 +272,7 @@ def compare_sunny_hours(city_names, is_save, *dataframes):
         table_grid.axis('tight')
         table_grid.axis('off')
 
-        text = 'Placeholder _____ _____\nPlaceholder _____ _____\nPlaceholder _____ _____'
+        text = 'Szeged "SunCity" is the most sunnier city?\n '
         plot_grid.annotate(text, xy=(-0.12, 1.12), xycoords='axes fraction', fontsize=14,
              bbox=dict(boxstyle="round", fc=(1, 1, 0.902), alpha=0.5),
              horizontalalignment='left', verticalalignment='top')

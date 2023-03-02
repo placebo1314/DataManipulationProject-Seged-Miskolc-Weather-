@@ -30,7 +30,7 @@ Havonta;;;;;;;;
 
 - Few examples, what can we create:
 
-    ![Screenshot](ExampleResults/Newplot.png)
+    ![Screenshot](Results\Szeged-Szombathely_compare_sunny_hours_(2017-2021)plot.png)
 
     ![Screenshot](ExampleResults/Miskolc_Szeged_Precipitation(2017-2021)plot.png)
 
